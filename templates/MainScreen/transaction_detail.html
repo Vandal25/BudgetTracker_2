@@ -1,0 +1,17 @@
+{% extends "MainScreen/base.html" %}
+{% block content  %}
+    <div class="list-group">
+                          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                <img class="rounded-circle article-img" src="#">
+                                </div>
+                                <div>
+                                <h5 class="mb-1">{{ object.destination }}</h5>
+                                <small>{{ object.date }}</small>
+                                </div>
+                              <h1>{{ object.value }}</h1>
+                            </div>
+                          </a>
+                    </div>
+{% endblock content %}

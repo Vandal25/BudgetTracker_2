@@ -17,5 +17,5 @@ def get_database():
     else:
         return{
             'ENGINE' : 'django.db.backends.sqlite3' ,
-            'NAEM' : os.path.join(BASE_DIR, 'db.sqlite3')
+            'NAME' : os.path.join(BASE_DIR, 'db.sqlite3')
          }
