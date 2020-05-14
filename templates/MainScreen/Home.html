@@ -22,23 +22,28 @@
                             <h1 class="card-title">200$</h1>
                           </div>
                     </div>
-            </div>
-                {% for transactions in Transaction %}
-                    <div class="list-group">
-                          <a href="{% url 'transaction-detail' Transaction.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+             </div>
+            <br><br>
+                <div class="list-group">
+                {% for transaction in transactions %}
+
+                          <a href="{% url 'transaction-detail' transaction.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex justify-content-around">
                                 <div>
-                                <img class="rounded-circle article-img" src="#">
+                                    <img class="rounded-circle article-img" src="#">
                                 </div>
                                 <div>
-                                <h5 class="mb-1">{{ Transaction.destination }}</h5>
-                                <small>{{ Transaction.date }}</small>
+                                <h5 class="mb-1">{{ transaction.destination }}</h5>
+                                <small>{{ transaction.date }}</small>
                                 </div>
-                              <h1>{{ Transaction.value }}</h1>
+                              <h1>{{ transaction.value }}</h1>
                             </div>
                           </a>
+
+                    {% endfor %}
+             </div>
+
                     </div>
-                {% endfor %}
                   {% else %}
             <div class="text-center">
                     <h3> You are not logged in! Log in or if you do not have an account create one.</h3>

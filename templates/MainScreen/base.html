@@ -28,7 +28,7 @@
               <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
                   {% if user.is_authenticated  %}
                     <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
-                    <a class="dropdown-item" href="#">Something</a>
+                    <a class="dropdown-item" href="{% url 'transaction-create' %}">New Transaction</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                   {% else %}
