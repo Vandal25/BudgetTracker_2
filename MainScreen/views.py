@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.models import User
 from .models import Transaction
 
 def home(request):
@@ -13,7 +14,11 @@ class TransactionListView(ListView):
     model = Transaction
     template_name = 'MainScreen/Home.html' #<app>/<model>_<viewtype>.html
     context_object_name = 'transactions'
-    ordering = ['-date']
+    paginate_by = 5
+
+    def get_queryset(self):
+       user = self.request.user
+       return Transaction.objects.filter(transaction_user=user).order_by('-date')
 
 class TransactionDetailView(DetailView):
     model = Transaction
