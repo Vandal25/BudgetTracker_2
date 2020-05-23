@@ -1,73 +1,74 @@
 {% extends "MainScreen/base.html" %}
-{% block content  %}
+{% block content %}
     <div class='container'>
-        {% if user.is_authenticated  %}
+        {% if user.is_authenticated %}
             <div class="text-center">
-            <div class="d-flex justify-content-around">
+                <div class="d-flex justify-content-around">
                     <div class="card border-primary mb-3" style="min-width: 18rem;">
-                          <div class="card-header">Total</div>
-                          <div class="card-body">
+                        <div class="card-header">Total</div>
+                        <div class="card-body">
                             <h1 class="card-title">1000$</h1>
-                          </div>
+                        </div>
                     </div>
                     <div class="card border-success mb-3" style="min-width: 18rem;">
-                          <div class="card-header">Revenue this month</div>
-                          <div class="card-body">
+                        <div class="card-header">Revenue this month</div>
+                        <div class="card-body">
                             <h1 class="card-title">500$</h1>
-                          </div>
+                        </div>
                     </div>
                     <div class="card border-danger mb-3" style="min-width: 18rem;">
-                          <div class="card-header">Expenses this month</div>
-                          <div class="card-body">
+                        <div class="card-header">Expenses this month</div>
+                        <div class="card-body">
                             <h1 class="card-title">200$</h1>
-                          </div>
+                        </div>
                     </div>
-             </div>
-            <br><br>
+                </div>
+                <br><br>
                 <div class="list-group">
-                {% for transaction in transactions %}
-
-                          <a href="{% url 'transaction-detail' transaction.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                    {% for transaction in transactions %}
+                        <a href="{% url 'transaction-detail' transaction.id %}"
+                           class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex justify-content-around">
                                 <div>
                                     <img class="rounded-circle article-img" src="#">
                                 </div>
                                 <div>
-                                <h5 class="mb-1">{{ transaction.destination }}</h5>
-                                <small>{{ transaction.date }}</small>
+                                    <h5 class="mb-1">{{ transaction.destination }}</h5>
+                                    <small>{{ transaction.date }}</small>
                                 </div>
-                              <h1>{{ transaction.value }}</h1>
+                                <h1>{{ transaction.value }}</h1>
                             </div>
-                          </a>
+                        </a>
                     {% endfor %}
-                <div>
-                <br><br>
-                {% if is_paginated %}
-                 {% if page_obj.has_previous %}
-                     <a class="btn btn-outline-secondary mb-4" href="?page=1"> << </a>
-                     <a class="btn btn-outline-secondary mb-4" href="?page={{  page.obj.previous_page_number }}"> < </a>
-                 {% endif %}
-                    {% for num in page_obj.paginator.page_range %}
-                        {% if page_obj.number == num %}
-                            <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
-                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                            <a class="btn btn-outline-secondary mb-4" href="?page={{ num }}">{{ num }}</a>
+                    <div>
+                        <br><br>
+                        {% if is_paginated %}
+                            {% if page_obj.has_previous %}
+                                <a class="btn btn-outline-secondary mb-4" href="?page=1"> << </a>
+                                <a class="btn btn-outline-secondary mb-4"
+                                   href="?page={{ page.obj.previous_page_number }}"> < </a>
+                            {% endif %}
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <a class="btn btn-outline-secondary mb-4" href="?page={{ num }}">{{ num }}</a>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <a class="btn btn-outline-secondary mb-4" href="?page={{ page_obj.next_page_number }}"> > </a>
+                                <a class="btn btn-outline-secondary mb-4" href="?page={{ page.obj.paginator.num_pages }}"> >> </a>
+                            {% endif %}
                         {% endif %}
-                    {% endfor %}
-                    {% if page_obj.has_next %}
-                     <a class="btn btn-outline-secondary mb-4" href="?page={{ page_obj.next_page_number }}"> > </a>
-                     <a class="btn btn-outline-secondary mb-4" href="?page={{  page.obj.paginator.num_pages }}"> >> </a>
-                 {% endif %}
-                {% endif %}
-                </div>
-             </div>
                     </div>
-                  {% else %}
-            <div class="text-center">
-                    <h3> You are not logged in! Log in or if you do not have an account create one.</h3>
-                    <a type="button" class="btn btn-primary btn-lg" href="{% url 'register' %}">Register</a>
-                    <a type="button" class="btn btn-secondary btn-lg" href="{% url 'login' %}">Log In</a>
+                </div>
             </div>
-                  {% endif %}
+        {% else %}
+            <div class="text-center">
+                <h3> You are not logged in! Log in or if you do not have an account create one.</h3>
+                <a type="button" class="btn btn-primary btn-lg" href="{% url 'register' %}">Register</a>
+                <a type="button" class="btn btn-secondary btn-lg" href="{% url 'login' %}">Log In</a>
+            </div>
+        {% endif %}
     </div>
 {% endblock content %}

@@ -17,15 +17,15 @@ class TransactionListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-       user = self.request.user
-       return Transaction.objects.filter(transaction_user=user).order_by('-date')
+        user = self.request.user.id
+        return Transaction.objects.filter(transaction_user=user).order_by('-date')
 
 class TransactionDetailView(DetailView):
     model = Transaction
 
 class TransactionCreateView(LoginRequiredMixin, CreateView):
     model = Transaction
-    fields = ['value', 'destination']
+    fields = ['transaction_direction', 'value', 'transaction_type', 'destination']
 
     def form_valid(self, form):
         form.instance.transaction_user = self.request.user
@@ -33,7 +33,7 @@ class TransactionCreateView(LoginRequiredMixin, CreateView):
 
 class TransactionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Transaction
-    fields = ['value', 'destination']
+    fields = ['transaction_direction', 'value', 'transaction_type', 'destination']
 
     def form_valid(self, form):
         form.instance.transaction_user = self.request.user
