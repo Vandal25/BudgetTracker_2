@@ -7,19 +7,19 @@
                     <div class="card border-primary mb-3" style="min-width: 18rem;">
                         <div class="card-header">Total</div>
                         <div class="card-body">
-                            <h1 class="card-title">1000$</h1>
+                            <h1 class="card-title">{{ total }}</h1>
                         </div>
                     </div>
                     <div class="card border-success mb-3" style="min-width: 18rem;">
                         <div class="card-header">Revenue this month</div>
                         <div class="card-body">
-                            <h1 class="card-title">500$</h1>
+                            <h1 class="card-title">{{ total_revenue }}</h1>
                         </div>
                     </div>
                     <div class="card border-danger mb-3" style="min-width: 18rem;">
                         <div class="card-header">Expenses this month</div>
                         <div class="card-body">
-                            <h1 class="card-title">200$</h1>
+                            <h1 class="card-title">{{ total_expenses }}</h1>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,11 @@
                                     <h5 class="mb-1">{{ transaction.destination }}</h5>
                                     <small>{{ transaction.date }}</small>
                                 </div>
-                                <h1>{{ transaction.value }}</h1>
+                                {% if transaction.transaction_direction == 2 %}
+                                <h1 class="text-success">{{ transaction.value }}</h1>
+                                {% else %}
+                                 <h1 class="text-danger">{{ transaction.value }}</h1>
+                                {% endif %}
                             </div>
                         </a>
                     {% endfor %}

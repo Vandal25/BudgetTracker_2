@@ -1,0 +1,35 @@
+{% extends "MainScreen/base.html" %}
+{% block content  %}
+    <script>
+        var chartData ={
+                        "type": "bar",
+                        "scale-x": {
+                            "values":[
+                                "Default",
+                                "Entertainment",
+                                "Utilities",
+                                "Food",
+                                "Transport",
+                            ]
+                        },
+                        "series": [
+                            {
+                                "values": [
+                                    {{ default }},
+                                    {{ entertainment }},
+                                    {{ utilities }},
+                                    {{ food }},
+                                    {{ transport }},
+                                ]
+                            }
+                        ]
+
+                    }
+    </script>
+
+    <div class="list-group">
+    <h3> How did you spend the money? </h3>
+        <div id="myChart"></div>
+    </div>
+
+{% endblock content %}

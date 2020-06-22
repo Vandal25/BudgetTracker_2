@@ -3,22 +3,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.models import User
 from .models import Transaction
+from django.db.models import Sum
+from django.utils import timezone
+
 
 def home(request):
     context = {
-        'transactions': Transaction.objects.all()
+        'transactions': Transaction.objects.all(),
+        'total': Transaction.objects.all()
     }
     return render(request, 'MainScreen/Home.html', context)
-
-class TransactionListView(ListView):
-    model = Transaction
-    template_name = 'MainScreen/Home.html' #<app>/<model>_<viewtype>.html
-    context_object_name = 'transactions'
-    paginate_by = 5
-
-    def get_queryset(self):
-        user = self.request.user.id
-        return Transaction.objects.filter(transaction_user=user).order_by('-date')
 
 class TransactionDetailView(DetailView):
     model = Transaction
@@ -55,5 +49,54 @@ class TransactionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
             return True
         return False
 
+def home_view(request):
+    user = request.user.id
+    transactions = Transaction.objects.filter(transaction_user=user).order_by('-date')
+    total_expenses = Transaction.objects.filter(transaction_user=user, transaction_direction=1).aggregate(Sum('value'))['value__sum']
+    total_revenue = Transaction.objects.filter(transaction_user=user, transaction_direction=2).aggregate(Sum('value'))['value__sum']
+
+    def is_not_none(value):
+        if value is None:
+            value = 0
+        return value
+
+    total_expenses = is_not_none(total_expenses)
+    total_revenue = is_not_none(total_revenue)
+
+    total = total_revenue - total_expenses
+
+    context = {'transactions': transactions,
+               'total_expenses': total_expenses,
+               'total_revenue': total_revenue,
+               'total': total,
+               }
+    return render(request, 'MainScreen/Home.html', context)
+
+def statistics_view(request):
+    user = request.user.id
+    default = Transaction.objects.filter(transaction_user=user, transaction_type=1, transaction_direction=1).aggregate(Sum('value'))['value__sum']
+    entertainment = Transaction.objects.filter(transaction_user=user, transaction_type=2, transaction_direction=1).aggregate(Sum('value'))['value__sum']
+    utilities = Transaction.objects.filter(transaction_user=user, transaction_type=3, transaction_direction=1).aggregate(Sum('value'))['value__sum']
+    food = Transaction.objects.filter(transaction_user=user, transaction_type=4, transaction_direction=1).aggregate(Sum('value'))['value__sum']
+    transport = Transaction.objects.filter(transaction_user=user, transaction_type=5, transaction_direction=1).aggregate(Sum('value'))['value__sum']
+
+    def is_not_none(value):
+        if value is None:
+            value = 0
+        return value
+
+    default = is_not_none(default)
+    entertainment = is_not_none(entertainment)
+    utilities = is_not_none(utilities)
+    food = is_not_none(food)
+    transport = is_not_none(transport)
+
+    context = {'default': default,
+               'entertainment': entertainment,
+               'utilities': utilities,
+               'food': food,
+               'transport': transport,
+    }
+    return render(request, 'MainScreen/statistics.html', context)
 
 
