@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.models import User
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from .models import Transaction
 from django.db.models import Sum
-from django.utils import timezone
+import logging
 
+logging.basicConfig(filename='test.log', level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(message)s')
 
 def home(request):
     context = {
@@ -51,6 +51,7 @@ class TransactionDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 
 def home_view(request):
     user = request.user.id
+    logging.debug('User {}'.format(user))
     transactions = Transaction.objects.filter(transaction_user=user).order_by('-date')
     total_expenses = Transaction.objects.filter(transaction_user=user, transaction_direction=1).aggregate(Sum('value'))['value__sum']
     total_revenue = Transaction.objects.filter(transaction_user=user, transaction_direction=2).aggregate(Sum('value'))['value__sum']
@@ -58,6 +59,7 @@ def home_view(request):
     def is_not_none(value):
         if value is None:
             value = 0
+        logging.debug('Value check: {} '.format(value))
         return value
 
     total_expenses = is_not_none(total_expenses)
@@ -74,6 +76,7 @@ def home_view(request):
 
 def statistics_view(request):
     user = request.user.id
+    logging.debug('User {}'.format(user))
     default = Transaction.objects.filter(transaction_user=user, transaction_type=1, transaction_direction=1).aggregate(Sum('value'))['value__sum']
     entertainment = Transaction.objects.filter(transaction_user=user, transaction_type=2, transaction_direction=1).aggregate(Sum('value'))['value__sum']
     utilities = Transaction.objects.filter(transaction_user=user, transaction_type=3, transaction_direction=1).aggregate(Sum('value'))['value__sum']
@@ -83,6 +86,7 @@ def statistics_view(request):
     def is_not_none(value):
         if value is None:
             value = 0
+        logging.debug('Value check: {} '.format(value))
         return value
 
     default = is_not_none(default)

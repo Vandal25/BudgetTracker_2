@@ -30,7 +30,25 @@
                            class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="d-flex justify-content-around">
                                 <div>
-                                    <img class="rounded-circle article-img" src="#">
+                                    {% if transaction.transaction_direction == 1 %}
+                                            {% if transaction.transaction_type == 1 %}
+                                                <img class="rounded-circle article-img" src="https://i.imgur.com/V6iEOgS.png" alt="default.png" width="50" height="50">
+                                            {% endif %}
+                                            {% if transaction.transaction_type == 2 %}
+                                                <img class="rounded-circle article-img" src="https://i.imgur.com/qIWMw4G.png" alt="default.png" width="50" height="50">
+                                            {% endif %}
+                                            {% if transaction.transaction_type == 3 %}
+                                                <img class="rounded-circle article-img" src="https://i.imgur.com/HlLaLu7.png" alt="default.png" width="50" height="50">
+                                            {% endif %}
+                                            {% if transaction.transaction_type == 4 %}
+                                                <img class="rounded-circle article-img" src="https://i.imgur.com/ZLAOPL0.png" alt="default.png" width="50" height="50">
+                                            {% endif %}
+                                            {% if transaction.transaction_type == 5 %}
+                                                <img class="rounded-circle article-img" src="https://i.imgur.com/1dbRJjJ.png" alt="default.png" width="50" height="50">
+                                            {% endif %}
+                                    {% else %}
+                                        <img class="rounded-circle article-img" src="https://i.imgur.com/DkabhPi.png" alt="default.png" width="50" height="50">
+                                    {% endif %}
                                 </div>
                                 <div>
                                     <h5 class="mb-1">{{ transaction.destination }}</h5>
